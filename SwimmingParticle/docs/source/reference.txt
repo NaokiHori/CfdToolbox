@@ -1,0 +1,4 @@
+.. |WILLIAMSON1980| replace:: Williamson, *J. Comput. Phys.* (**35**), 1980
+.. |HU2019| replace:: Hu et al., *Phys. Rev. Lett.* (**123**), 2019
+.. |WOOD2019| replace:: Wood and Porter, *J. Appl. Eng. Math.* (**6**), 2019
+.. |LAUGA2020| replace:: Lauga, *Cambridge University Press*, 2020
