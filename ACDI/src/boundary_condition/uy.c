@@ -1,0 +1,19 @@
+#include <stddef.h> // size_t
+#include "logger.h"
+#include "boundary_condition.h"
+
+int impose_boundary_condition_uy_x(
+    const domain_t * const domain,
+    double ** const uy
+) {
+  const size_t nx = domain->nx;
+  const size_t ny = domain->ny;
+  const double uy_xm = - 0.5;
+  const double uy_xp = 0.5;
+  for (size_t j = 0; j <= ny + 1; j++) {
+    uy[j][     0] = 2. * uy_xm - uy[j][ 1];
+    uy[j][nx + 1] = 2. * uy_xp - uy[j][nx];
+  }
+  return 0;
+}
+
