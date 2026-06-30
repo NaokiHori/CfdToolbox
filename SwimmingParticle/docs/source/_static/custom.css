@@ -1,4 +1,4 @@
-div.MathJax_Display {
+mjx-container[jax="CHTML"] {
   overflow-x: scroll;
   overflow-y: hidden;
 }
