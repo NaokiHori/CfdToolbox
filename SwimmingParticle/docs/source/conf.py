@@ -10,8 +10,6 @@ html_theme_options = {
     "nosidebar": "false",
 }
 
-mathjax_path = "https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js?config=TeX-AMS-MML_HTMLorMML"
-
 macros = dict()
 macros["vr"] = ["r", 0]
 macros["vt"] = ["\\theta", 0]
@@ -55,4 +53,4 @@ macros["dscalardif"] = [
         , 2
 ]
 
-mathjax3_config = {"TeX": {"Macros": macros}}
+mathjax3_config = {"tex": {"macros": macros}}
