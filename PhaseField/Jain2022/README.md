@@ -1,6 +1,6 @@
 # Accurate Conservative Diffusive Interface Method
 
-![cover image](https://github.com/NaokiHori/CfdToolbox/blob/main/ACDI/cover.jpg)
+![cover image](https://github.com/NaokiHori/CfdToolbox/blob/main/PhaseField/Jain2022/cover.jpg)
 
 Two-dimensional ACDI in wall-bounded domains (x: wall-bounded, y: periodic).
 
