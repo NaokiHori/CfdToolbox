@@ -3,7 +3,7 @@
 version = 4
 
 [[package]]
-name = "cfd-toolbox-gemm"
+name = "cfd-toolbox-non-uniform"
 version = "0.1.0"
 dependencies = [
  "komainu",

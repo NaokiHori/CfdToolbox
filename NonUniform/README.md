@@ -16,6 +16,12 @@ make all
 
 Domain (lengths, degree of freedoms, grid stretching, among others) is configured in `src/domain.c`.
 
+## Features
+
+- Active scalar coupling (temperature and salinity: double-diffusive convections)
+- Three-step Runge-Kutta time integrator
+- Implicit diffusive treatment (using factorization)
+
 ## Documentation
 
 Visit [docs](./docs).
