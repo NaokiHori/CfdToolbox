@@ -132,16 +132,17 @@ pub fn exec(symbols: &crate::Symbols, destination: &str) {
             .as_str(),
         )
     };
-    let p = MathExpr::from("p");
-    let q = MathExpr::from("q");
-    let p_x_eigenspace = MathExpr::from("P");
-    let q_x_eigenspace = MathExpr::from("Q");
-    let p_vector = |index: &str| -> MathExpr { MathExpr::from(format!("{}_{index}", &p)) };
-    let q_vector = |index: &str| -> MathExpr { MathExpr::from(format!("{}_{index}", &q)) };
-    let p_vector_x_eigenspace =
-        |index: &str| -> MathExpr { MathExpr::from(format!("{}_{index}", &p_x_eigenspace)) };
-    let q_vector_x_eigenspace =
-        |index: &str| -> MathExpr { MathExpr::from(format!("{}_{index}", &q_x_eigenspace)) };
+    let f = MathExpr::from("f");
+    let g = MathExpr::from("g");
+    let block_diagonal_matrix_symbol = MathExpr::from("B");
+    let f_x_eigenspace = MathExpr::from("F");
+    let g_x_eigenspace = MathExpr::from("G");
+    let f_vector = |index: &str| -> MathExpr { MathExpr::from(format!("{}_{index}", &f)) };
+    let g_vector = |index: &str| -> MathExpr { MathExpr::from(format!("{}_{index}", &g)) };
+    let f_vector_x_eigenspace =
+        |index: &str| -> MathExpr { MathExpr::from(format!("{}_{index}", &f_x_eigenspace)) };
+    let g_vector_x_eigenspace =
+        |index: &str| -> MathExpr { MathExpr::from(format!("{}_{index}", &g_x_eigenspace)) };
     let lower_symbol = MathExpr::from("l");
     let upper_symbol = MathExpr::from("u");
     let x_eigenvalue = MathExpr::from(r"\lambda_x");
@@ -161,49 +162,52 @@ pub fn exec(symbols: &crate::Symbols, destination: &str) {
         |indices: (&str, &str)| -> MathExpr { matrix(real_symmetric_matrix_symbol, indices) };
     let markdown = doc!(
         include_str!("discrete_poisson_equation.komainu.md"),
+        block_diagonal_matrix_symbol = &block_diagonal_matrix_symbol,
         diagonal_matrix = matrix(diagonal_matrix_symbol, ("k", "l")),
         discrete_poisson_equation = equal(
-            &x_lower_diagonal * at_2d(&p, (Offset::MinusOne, Offset::None))
-                - (&x_lower_diagonal + &x_upper_diagonal) * at_2d(&p, (Offset::None, Offset::None))
-                + &x_upper_diagonal * at_2d(&p, (Offset::PlusOne, Offset::None))
-                + &y_lower_diagonal * at_2d(&p, (Offset::None, Offset::MinusOne))
-                - (&y_lower_diagonal + &y_upper_diagonal) * at_2d(&p, (Offset::None, Offset::None))
-                + &y_upper_diagonal * at_2d(&p, (Offset::None, Offset::PlusOne)),
-            at_2d(&q, (Offset::None, Offset::None)),
+            &x_lower_diagonal * at_2d(&f, (Offset::MinusOne, Offset::None))
+                - (&x_lower_diagonal + &x_upper_diagonal) * at_2d(&f, (Offset::None, Offset::None))
+                + &x_upper_diagonal * at_2d(&f, (Offset::PlusOne, Offset::None))
+                + &y_lower_diagonal * at_2d(&f, (Offset::None, Offset::MinusOne))
+                - (&y_lower_diagonal + &y_upper_diagonal) * at_2d(&f, (Offset::None, Offset::None))
+                + &y_upper_diagonal * at_2d(&f, (Offset::None, Offset::PlusOne)),
+            at_2d(&g, (Offset::None, Offset::None)),
         ),
         discrete_poisson_equation_1d = equal(
-            &x_lower_diagonal * at_1d(&p, Offset::MinusOne)
-                - (&x_lower_diagonal + &x_upper_diagonal) * at_1d(&p, Offset::None)
-                + &x_upper_diagonal * at_1d(&p, Offset::PlusOne),
-            at_1d(&q, Offset::None),
+            &x_lower_diagonal * at_1d(&f, Offset::MinusOne)
+                - (&x_lower_diagonal + &x_upper_diagonal) * at_1d(&f, Offset::None)
+                + &x_upper_diagonal * at_1d(&f, Offset::PlusOne),
+            at_1d(&g, Offset::None),
         ),
         discrete_poisson_equation_1d_matrix_form =
-            equal(laplace_operator(("i", "j")) * &p_vector("j"), q_vector("i")),
+            equal(laplace_operator(("i", "j")) * &f_vector("j"), g_vector("i")),
         discrete_poisson_equation_1d_matrix_form_decomposed = equal(
             matrix(diagonal_matrix_symbol, ("i", "k"))
                 * matrix(orthogonal_matrix_symbol, ("l", "k"))
                 * matrix(symmetrization_matrix_symbol, ("l", "j"))
-                * &p_vector("j"),
+                * &f_vector("j"),
             matrix(orthogonal_matrix_symbol, ("k", "i"))
                 * matrix(symmetrization_matrix_symbol, ("k", "j"))
-                * &q_vector("j"),
+                * &g_vector("j"),
         ),
         discrete_poisson_equation_1d_matrix_form_decomposed_eigenspace = equal(
-            matrix(diagonal_matrix_symbol, ("i", "j")) * p_vector_x_eigenspace("j"),
-            q_vector_x_eigenspace("i"),
+            matrix(diagonal_matrix_symbol, ("i", "j")) * f_vector_x_eigenspace("j"),
+            g_vector_x_eigenspace("i"),
         ),
         discrete_poisson_equation_x_eigenspace = equal(
-            &x_eigenvalue * at_x_eigenspace(&p_x_eigenspace, Offset::None)
-                + &y_lower_diagonal * at_x_eigenspace(&p_x_eigenspace, Offset::MinusOne)
+            &x_eigenvalue * at_x_eigenspace(&f_x_eigenspace, Offset::None)
+                + &y_lower_diagonal * at_x_eigenspace(&f_x_eigenspace, Offset::MinusOne)
                 - (&y_lower_diagonal + &y_upper_diagonal)
-                    * at_x_eigenspace(&p_x_eigenspace, Offset::None)
-                + &y_upper_diagonal * at_x_eigenspace(&p_x_eigenspace, Offset::PlusOne),
-            at_x_eigenspace(&q_x_eigenspace, Offset::None),
+                    * at_x_eigenspace(&f_x_eigenspace, Offset::None)
+                + &y_upper_diagonal * at_x_eigenspace(&f_x_eigenspace, Offset::PlusOne),
+            at_x_eigenspace(&g_x_eigenspace, Offset::None),
         ),
+        f = &f,
+        f_x_eigenspace = &f_x_eigenspace,
+        g = &g,
         laplace_operator = laplace_operator(("i", "j")),
         orthogonal_matrix = matrix(orthogonal_matrix_symbol, ("i", "k")),
-        p = &p,
-        p_x_eigenspace = &p_x_eigenspace,
+        orthogonal_matrix_symbol = &orthogonal_matrix_symbol,
         real_symmetric_matrix_definition = equal(
             real_symmetric_matrix(("i", "j")),
             matrix(orthogonal_matrix_symbol, ("i", "k"))

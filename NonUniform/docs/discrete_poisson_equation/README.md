@@ -3,7 +3,7 @@
 The two-dimensional Poisson equation discretized by the second-order accurate central-finite-difference schems in rectilinear coordinates leads to:
 
 ```math
-{{\left( {l}_1 \right)_{i}} {{p}_{i-1, j}} - \left( {\left( {l}_1 \right)_{i}} + {\left( {u}_1 \right)_{i}} \right) {{p}_{i, j}} + {\left( {u}_1 \right)_{i}} {{p}_{i+1, j}} + {\left( {l}_2 \right)_{j}} {{p}_{i, j-1}} - \left( {\left( {l}_2 \right)_{j}} + {\left( {u}_2 \right)_{j}} \right) {{p}_{i, j}} + {\left( {u}_2 \right)_{j}} {{p}_{i, j+1}} = {{q}_{i, j}}},
+{{\left( {l}_1 \right)_{i}} {{f}_{i-1, j}} - \left( {\left( {l}_1 \right)_{i}} + {\left( {u}_1 \right)_{i}} \right) {{f}_{i, j}} + {\left( {u}_1 \right)_{i}} {{f}_{i+1, j}} + {\left( {l}_2 \right)_{j}} {{f}_{i, j-1}} - \left( {\left( {l}_2 \right)_{j}} + {\left( {u}_2 \right)_{j}} \right) {{f}_{i, j}} + {\left( {u}_2 \right)_{j}} {{f}_{i, j+1}} = {{g}_{i, j}}},
 ```
 
 where
@@ -35,23 +35,39 @@ where the red and blue cells contain non-zero and zero values, respectively.
 To solve this system directly, we first aim to convert the original system to
 
 ```math
-{{\lambda_x} {{P}_{\lambda_k, j}} + {\left( {l}_2 \right)_{j}} {{P}_{\lambda_k, j-1}} - \left( {\left( {l}_2 \right)_{j}} + {\left( {u}_2 \right)_{j}} \right) {{P}_{\lambda_k, j}} + {\left( {u}_2 \right)_{j}} {{P}_{\lambda_k, j+1}} = {{Q}_{\lambda_k, j}}},
+{{\lambda_x} {{F}_{\lambda_k, j}} + {\left( {l}_2 \right)_{j}} {{F}_{\lambda_k, j-1}} - \left( {\left( {l}_2 \right)_{j}} + {\left( {u}_2 \right)_{j}} \right) {{F}_{\lambda_k, j}} + {\left( {u}_2 \right)_{j}} {{F}_{\lambda_k, j+1}} = {{G}_{\lambda_k, j}}},
 ```
 
-which is tri-diagonal for each ${\lambda_x}$ and thus can be solved fairly easily by e.g., the Thomas algorithm.
+which looks like:
+
+<p align="center">
+  <img alt="sparse_matrix_reduced" src="./sparse_matrix_reduced.png" width="50%" />
+</p>
+
+This conversion (eigendecomposition) is achieved by applying a block-diagonal operator ${B}$:
+
+```math
+{B}_{ij} {f}_{jk} {B}_{lk}
+=
+{B}_{ij} {g}_{jk} {B}_{lk},
+```
+
+where ${B}$ has $Q$ (which is elaborated in the next part) repeatedly (for $N_y$ times) on the main diagonal.
+
+The converted system is tridiagonal for each ${\lambda_x}$ and thus can be solved fairly easily by e.g., the Thomas algorithm.
 
 ## Spectral decomposition
 
-To find the transform from ${p}$ to ${P}$, we focus on the one-dimensional equation:
+To find the transform from ${f}$ to ${F}$, we focus on the one-dimensional equation:
 
 ```math
-{{\left( {l}_1 \right)_{i}} {{p}_{i-1}} - \left( {\left( {l}_1 \right)_{i}} + {\left( {u}_1 \right)_{i}} \right) {{p}_{i}} + {\left( {u}_1 \right)_{i}} {{p}_{i+1}} = {{q}_{i}}},
+{{\left( {l}_1 \right)_{i}} {{f}_{i-1}} - \left( {\left( {l}_1 \right)_{i}} + {\left( {u}_1 \right)_{i}} \right) {{f}_{i}} + {\left( {u}_1 \right)_{i}} {{f}_{i+1}} = {{g}_{i}}},
 ```
 
 or equivalently:
 
 ```math
-{{L_{ij}} {{p}_j} = {{q}_i}}.
+{{L_{ij}} {{f}_j} = {{g}_i}}.
 ```
 
 Our objective is equivalent to decompose the linear operator ${L_{ij}}$.
@@ -79,13 +95,13 @@ with ${D_{ij}}$ being a diagonal matrix whose components are:
 As a consequence, the one-dimensional equation of interest leads to
 
 ```math
-{{\Lambda_{ik}} {Q_{lk}} {D_{lj}} {{p}_j} = {Q_{ki}} {D_{kj}} {{q}_j}},
+{{\Lambda_{ik}} {Q_{lk}} {D_{lj}} {{f}_j} = {Q_{ki}} {D_{kj}} {{g}_j}},
 ```
 
 or equivalently
 
 ```math
-{{\Lambda_{ij}} {{P}_j} = {{Q}_i}},
+{{\Lambda_{ij}} {{F}_j} = {{G}_i}},
 ```
 
 where we use that inverse of an orthogonal matrix is equal to the transpose of it.

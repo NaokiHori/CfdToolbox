@@ -38,11 +38,27 @@ To solve this system directly, we first aim to convert the original system to
 {discrete_poisson_equation_x_eigenspace},
 ```
 
-which is tri-diagonal for each ${x_eigenvalue}$ and thus can be solved fairly easily by e.g., the Thomas algorithm.
+which looks like:
+
+<p align="center">
+  <img alt="sparse_matrix_reduced" src="./sparse_matrix_reduced.png" width="50%" />
+</p>
+
+This conversion (eigendecomposition) is achieved by applying a block-diagonal operator ${block_diagonal_matrix_symbol}$:
+
+```math
+{block_diagonal_matrix_symbol}_{{ij}} {f}_{{jk}} {block_diagonal_matrix_symbol}_{{lk}}
+=
+{block_diagonal_matrix_symbol}_{{ij}} {g}_{{jk}} {block_diagonal_matrix_symbol}_{{lk}},
+```
+
+where ${block_diagonal_matrix_symbol}$ has ${orthogonal_matrix_symbol}$ (which is elaborated in the next part) repeatedly (for $N_y$ times) on the main diagonal.
+
+The converted system is tridiagonal for each ${x_eigenvalue}$ and thus can be solved fairly easily by e.g., the Thomas algorithm.
 
 ## Spectral decomposition
 
-To find the transform from ${p}$ to ${p_x_eigenspace}$, we focus on the one-dimensional equation:
+To find the transform from ${f}$ to ${f_x_eigenspace}$, we focus on the one-dimensional equation:
 
 ```math
 {discrete_poisson_equation_1d},
