@@ -3,10 +3,9 @@
 
 #include <stddef.h>
 
-extern const size_t N_RUNGE_KUTTA_STEP;
+extern const size_t N_RUNGE_KUTTA_STEPS;
 
 typedef struct {
-  size_t step;
   double explicit_previous;
   double explicit_current;
   double implicit;

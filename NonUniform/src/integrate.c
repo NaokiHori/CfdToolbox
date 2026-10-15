@@ -17,7 +17,7 @@ int integrate(
   if (0 != decide_dt(parameters, domain, flow_field, dt)) {
     return 1;
   }
-  for (size_t runge_kutta_step = 0; runge_kutta_step < N_RUNGE_KUTTA_STEP; runge_kutta_step++) {
+  for (size_t runge_kutta_step = 0; runge_kutta_step < N_RUNGE_KUTTA_STEPS; runge_kutta_step++) {
     runge_kutta_coefficients_t runge_kutta_coefficients = {0};
     if (0 != runge_kutta_coefficients_setup(runge_kutta_step, &runge_kutta_coefficients)) {
       goto abort;

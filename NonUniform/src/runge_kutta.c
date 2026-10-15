@@ -1,6 +1,6 @@
 #include "runge_kutta.h"
 
-const size_t N_RUNGE_KUTTA_STEP = 3;
+const size_t N_RUNGE_KUTTA_STEPS = 3;
 
 int runge_kutta_coefficients_setup(
     const size_t step,
