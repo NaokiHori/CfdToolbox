@@ -1,6 +1,6 @@
 # Spectral
 
-[![CoverImage](https://github.com/NaokiHori/CfdToolbox/blob/main/Spectral/cover.jpg)](https://youtu.be/U-Wwif6s9yM)
+[![CoverImage](./cover.jpg)](https://youtu.be/U-Wwif6s9yM)
 
 ## Overview
 
