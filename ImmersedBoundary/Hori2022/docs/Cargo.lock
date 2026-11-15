@@ -12,4 +12,3 @@ dependencies = [
 [[package]]
 name = "komainu"
 version = "0.1.0"
-source = "git+https://github.com/NaokiHori/Komainu#26deef256bd8e31a5d9265e5311465085f61b51a"

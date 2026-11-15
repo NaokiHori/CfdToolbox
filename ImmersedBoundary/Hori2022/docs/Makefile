@@ -1,20 +1,21 @@
-DOCKER_IMAGE := naokihori/cfd-toolbox-docs:latest
-OPTS := --rm -it -v ${PWD}:/app -w /app -e RUST_BACKTRACE=1 --env-file .env --init
+IMAGE := naokihori/komainu:latest
 
-build:
-	docker run $(OPTS) $(DOCKER_IMAGE) cargo build
+# Source is mounted read-only and the container has no network access (no dependencies).
+DOCKER_RUN := docker run --rm --network none
 
-clean:
-	docker run $(OPTS) $(DOCKER_IMAGE) cargo clean
+help:
+	@echo "help        : show this message"
+	@echo "build-image : build docker image"
+	@echo "check       : clippy and rustfmt check"
+	@echo "run         : run application to render document"
 
-clippy:
-	docker run $(OPTS) $(DOCKER_IMAGE) cargo clippy --tests
+build-image:
+	docker build -t $(IMAGE) .
 
-fmt:
-	docker run $(OPTS) $(DOCKER_IMAGE) cargo fmt
+check:
+	$(DOCKER_RUN) -v ${PWD}:/app $(IMAGE) sh -c "cargo clippy --all-targets && cargo fmt"
 
 run:
-	docker run $(OPTS) $(DOCKER_IMAGE) cargo run
+	$(DOCKER_RUN) -v ${PWD}:/app $(IMAGE) cargo run --release
 
-test:
-	docker run $(OPTS) $(DOCKER_IMAGE) cargo test -- --nocapture
+.PHONY: help build-image check run

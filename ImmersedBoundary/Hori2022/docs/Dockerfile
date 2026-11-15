@@ -1,15 +1,13 @@
-FROM rust:latest
+FROM rust:alpine
 
 RUN rustup component add clippy rustfmt
 
+RUN adduser -D -u 1000 app
+
+USER app
 WORKDIR /app
 
-ENV CARGO_NET_GIT_FETCH_WITH_CLI=true
+ENV CARGO_HOME=/app/.cargo \
+  CARGO_TARGET_DIR=/app/target
 
-RUN echo '#!/bin/sh\n\
-if [ -n "$GH_TOKEN" ]; then\n\
-  git config --global url."https://x-access-token:${GH_TOKEN}@github.com/".insteadOf "https://github.com/"\n\
-fi\n\
-exec "$@"' > /entrypoint.sh && chmod +x /entrypoint.sh
-
-ENTRYPOINT ["/entrypoint.sh"]
+RUN mkdir "$CARGO_HOME" "$CARGO_TARGET_DIR"

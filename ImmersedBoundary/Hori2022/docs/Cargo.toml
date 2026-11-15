@@ -4,4 +4,4 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-komainu = { git = "https://github.com/NaokiHori/Komainu", version = "0.1.0" }
+komainu = { path = "komainu" }
