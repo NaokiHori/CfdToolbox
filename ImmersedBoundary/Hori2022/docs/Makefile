@@ -1,7 +1,4 @@
-IMAGE := naokihori/komainu:latest
-
-# Source is mounted read-only and the container has no network access (no dependencies).
-DOCKER_RUN := docker run --rm --network none
+IMAGE := cfd-toolbox-doc
 
 help:
 	@echo "help        : show this message"
@@ -13,9 +10,24 @@ build-image:
 	docker build -t $(IMAGE) .
 
 check:
-	$(DOCKER_RUN) -v ${PWD}:/app $(IMAGE) sh -c "cargo clippy --all-targets && cargo fmt"
+	docker run \
+    --rm \
+    -v ${PWD}/Cargo.lock:/app/Cargo.lock:ro \
+    -v ${PWD}/Cargo.toml:/app/Cargo.toml:ro \
+    -v ${PWD}/src:/app/src:ro \
+    $(IMAGE) \
+    sh -c "cargo clippy --all-targets && cargo fmt"
 
 run:
-	$(DOCKER_RUN) -v ${PWD}:/app $(IMAGE) cargo run --release
+	mkdir -p output
+	docker run \
+    --rm \
+    -v ${PWD}/Cargo.lock:/app/Cargo.lock:ro \
+    -v ${PWD}/Cargo.toml:/app/Cargo.toml:ro \
+    -v ${PWD}/src:/app/src:ro \
+    -v ${PWD}/template:/app/template:ro \
+    -v ${PWD}/output:/app/output \
+    $(IMAGE) \
+    cargo run --release
 
 .PHONY: help build-image check run

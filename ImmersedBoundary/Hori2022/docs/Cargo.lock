@@ -3,7 +3,7 @@
 version = 4
 
 [[package]]
-name = "cfd-toolbox-immersed-boundary-hori2022"
+name = "cfd-toolbox-doc"
 version = "0.1.0"
 dependencies = [
  "komainu",
@@ -12,3 +12,4 @@ dependencies = [
 [[package]]
 name = "komainu"
 version = "0.1.0"
+source = "git+https://github.com/NaokiHori/Komainu#2e16a9f313a96775e9f7f8705676e4896979978e"

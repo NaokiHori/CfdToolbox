@@ -1,7 +1,7 @@
 [package]
-name = "cfd-toolbox-immersed-boundary-hori2022"
+name = "cfd-toolbox-doc"
 version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-komainu = { path = "komainu" }
+komainu = { git = "https://github.com/NaokiHori/Komainu" }

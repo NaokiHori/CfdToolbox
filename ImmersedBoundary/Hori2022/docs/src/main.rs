@@ -42,6 +42,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     doc.symbol("particle_volume", r"V^p");
     doc.symbol("particle_volume_fraction", r"\phi");
     let markdown = doc.render()?;
-    std::fs::write("README.md", markdown)?;
+    std::fs::write("output/README.md", markdown)?;
     Ok(())
 }
