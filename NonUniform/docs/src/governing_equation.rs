@@ -4,8 +4,12 @@ fn coordinate(symbol: &Expr, index: &Expr) -> Expr {
     Expr::superscript(symbol, index)
 }
 
-pub fn exec(symbols: &crate::Symbols, destination: &str) -> Result<(), Box<dyn std::error::Error>> {
-    let template = std::fs::read_to_string("template/governing_equation.komainu.md")?;
+pub fn exec(
+    symbols: &crate::Symbols,
+    input: &str,
+    output: &str,
+) -> Result<(), Box<dyn std::error::Error>> {
+    let template = std::fs::read_to_string(input)?;
     let mut doc = Document::new(template);
     doc.symbol("i", r"i");
     doc.symbol("j", r"j");
@@ -59,6 +63,6 @@ pub fn exec(symbols: &crate::Symbols, destination: &str) -> Result<(), Box<dyn s
         Expr::definite_integral(&args[0], &args[1], &args[2], &args[3])
     });
     let markdown = doc.render()?;
-    std::fs::write(destination, markdown)?;
+    std::fs::write(output, markdown)?;
     Ok(())
 }

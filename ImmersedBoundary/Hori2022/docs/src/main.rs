@@ -3,7 +3,7 @@ use komainu::{Document, Expr};
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let template = std::fs::read_to_string("template/README.komainu.md")?;
     let mut doc = Document::new(template);
-    doc.function("heaviside", "H", 1);
+    let heaviside_symbol = doc.symbol("heaviside_symbol", "H");
     doc.operator("vector", 2, |args| Expr::subscript(&args[0], &args[1]));
     doc.operator("step_at", 2, |args| Expr::superscript(&args[0], &args[1]));
     doc.operator("partial", 2, |args| {
@@ -12,6 +12,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     doc.operator("fraction", 2, |args| Expr::fraction(&args[0], &args[1]));
     doc.operator("particle_volume_integral", 3, |args| {
         Expr::integral_over(&args[0], &args[1], &args[2])
+    });
+    doc.operator("heaviside", 1, move |args| {
+        Expr::function(&heaviside_symbol, &args[0..])
     });
     doc.symbol("pi", r"\pi");
     doc.symbol("i", r"i");

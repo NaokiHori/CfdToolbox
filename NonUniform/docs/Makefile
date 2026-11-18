@@ -1,4 +1,4 @@
-IMAGE := cfd-toolbox-doc
+IMAGE := komainu
 
 help:
 	@echo "help        : show this message"
@@ -14,7 +14,7 @@ check:
     --rm \
     -v ${PWD}/Cargo.lock:/app/Cargo.lock:ro \
     -v ${PWD}/Cargo.toml:/app/Cargo.toml:ro \
-    -v ${PWD}/src:/app/src:ro \
+    -v ${PWD}/src:/app/src \
     $(IMAGE) \
     sh -c "cargo clippy --all-targets && cargo fmt"
 
