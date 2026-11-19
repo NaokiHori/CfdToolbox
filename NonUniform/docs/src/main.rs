@@ -1,23 +1,27 @@
-// mod discrete_poisson_equation;
+mod discrete_poisson_equation;
 mod governing_equation;
 
 struct Symbols {
-    coordinate: String,
-    scale_factor: String,
-    time: String,
+    coordinate: &'static str,
+    scale_factor: &'static str,
+    time: &'static str,
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let symbols = Symbols {
-        coordinate: String::from(r"\xi"),
-        scale_factor: String::from("h"),
-        time: String::from("t"),
+        coordinate: r"\xi",
+        scale_factor: "h",
+        time: "t",
     };
     governing_equation::exec(
         &symbols,
         "template/governing_equation.komainu.md",
         "output/governing_equation.md",
     )?;
-    // discrete_poisson_equation::exec(&symbols, "discrete_poisson_equation/README.md");
+    discrete_poisson_equation::exec(
+        &symbols,
+        "template/discrete_poisson_equation.komainu.md",
+        "output/discrete_poisson_equation.md",
+    )?;
     Ok(())
 }

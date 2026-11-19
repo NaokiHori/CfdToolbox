@@ -5,7 +5,7 @@ fn coordinate(symbol: &Expr, index: &Expr) -> Expr {
 }
 
 pub fn exec(
-    symbols: &crate::Symbols,
+    global_symbols: &crate::Symbols,
     input: &str,
     output: &str,
 ) -> Result<(), Box<dyn std::error::Error>> {
@@ -13,7 +13,7 @@ pub fn exec(
     let mut doc = Document::new(template);
     doc.symbol("i", r"i");
     doc.symbol("j", r"j");
-    doc.symbol("time", &symbols.time);
+    doc.symbol("time", global_symbols.time);
     doc.symbol("jacobian_determinant", r"J");
     doc.symbol("reynolds", r"Re");
     doc.symbol("pressure", r"p");
@@ -23,9 +23,9 @@ pub fn exec(
     doc.symbol("current", r"n");
     doc.symbol("next", r"n + 1");
     let cartesian_symbol = doc.symbol("cartesian_symbol", r"x");
-    let coordinate_symbol = doc.symbol("coordinate_symbol", &symbols.coordinate);
+    let coordinate_symbol = doc.symbol("coordinate_symbol", global_symbols.coordinate);
     let velocity_symbol = doc.symbol("velocity_symbol", r"u");
-    let scale_factor_symbol = doc.symbol("scale_factor_symbol", &symbols.scale_factor);
+    let scale_factor_symbol = doc.symbol("scale_factor_symbol", global_symbols.scale_factor);
     doc.operator("vector", 2, |args| Expr::subscript(&args[0], &args[1]));
     doc.operator("cartesian", 1, {
         let cartesian_symbol = cartesian_symbol.clone();
